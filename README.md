@@ -4,7 +4,7 @@
 #REST API endpoints - 2 - Mithun Suresh
 #REST API endpoints - 3 - Mehuli Mukherjee
 
-#Integrated by Mehuli Mukherjee
+#Integrated and fixes done by Mehuli Mukherjee
 
 #The project is made using Swagger user interface and the data is stored in the PostgreSQL database. Also, the project has been implemented using Java Persistence API (JPA).
 
