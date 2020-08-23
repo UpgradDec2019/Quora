@@ -1,7 +1,7 @@
 # Quora group project for Upgrad Dec'19 Blockchain batch
-#Changes done by:
-#REST API endpoints - 1 - Aravind Makam
-#REST API endpoints - 2 - Mithun Suresh
+#Dev Changes done by:
+#REST API endpoints - 1 - Mithun Suresh
+#REST API endpoints - 2 - Aravind Makam
 #REST API endpoints - 3 - Mehuli Mukherjee
 
 #Integrated and fixes done by Mehuli Mukherjee
