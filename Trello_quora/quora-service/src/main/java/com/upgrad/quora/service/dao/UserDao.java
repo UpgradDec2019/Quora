@@ -6,6 +6,7 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
 
+import com.upgrad.quora.service.entity.UserAuthEntity;
 import com.upgrad.quora.service.entity.UserEntity;
 
 @Repository
@@ -82,4 +83,57 @@ public class UserDao {
 		}
 		return deleteUser;
 	}
+	/**
+	 * 
+	 * @param accessToken
+	 * @return
+	 */
+	public UserAuthEntity getUserAuthToken(final String accessToken) {
+		try {
+			return entityManager.createNamedQuery("userAuthTokenByAccessToken", UserAuthEntity.class)
+					.setParameter("accessToken", accessToken).getSingleResult();
+		} catch (NoResultException nre) {
+
+			return null;
+		}
+	}
+
+	/**
+	 * 
+	 * @param userName
+	 * @param password
+	 * @return
+	 */
+	public UserEntity authenticateUser(final String userName, final String password) {
+		try {
+			return entityManager.createNamedQuery("authenticateUserQuery", UserEntity.class)
+					.setParameter("userName", userName).setParameter("password", password).getSingleResult();
+		} catch (NoResultException nre) {
+			return null;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param userAuthTokenEntity
+	 * @return
+	 */
+	public UserAuthEntity createAuthToken(final UserAuthEntity userAuthTokenEntity) {
+        entityManager.persist(userAuthTokenEntity);
+        return userAuthTokenEntity;
+    }
+
+	/**
+	 * 
+	 * @param userAuthTokenEntity
+	 * @return
+	 */
+	public UserAuthEntity updateUserLogOut(final UserAuthEntity userAuthTokenEntity) {
+		try {
+			return entityManager.merge(userAuthTokenEntity);
+		} catch (NoResultException nre) {
+			return null;
+		}
+	}
+
 }

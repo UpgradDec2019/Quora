@@ -1,15 +1,16 @@
 package com.upgrad.quora.service.business;
 
-import com.upgrad.quora.service.dao.UserDao;
-import com.upgrad.quora.service.entity.UserAuthTokenEntity;
-import com.upgrad.quora.service.entity.UserEntity;
-import com.upgrad.quora.service.exception.AuthenticationFailedException;
+import java.time.ZonedDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.ZonedDateTime;
+import com.upgrad.quora.service.dao.UserDao;
+import com.upgrad.quora.service.entity.UserAuthEntity;
+import com.upgrad.quora.service.entity.UserEntity;
+import com.upgrad.quora.service.exception.AuthenticationFailedException;
 
 @Service
 public class SigninBusinessService {
@@ -26,8 +27,8 @@ public class SigninBusinessService {
      * @return List of QuestionEntity objects.
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public UserAuthTokenEntity authenticate(final String username, final String password) throws AuthenticationFailedException {
-        UserAuthTokenEntity userAuthTokenEntity = null;
+    public UserAuthEntity authenticate(final String username, final String password) throws AuthenticationFailedException {
+        UserAuthEntity userAuthEntity = null;
         UserEntity userEntity = userDao.getUserByUserName(username);
         //check userName not exist
         if (userEntity == null) {
@@ -40,23 +41,21 @@ public class SigninBusinessService {
         userEntity = userDao.authenticateUser(username, encryptedPassword);
 
         if (userEntity != null) {
-            //if userName and password match
-            String uuid = userEntity.getUuid();
+			// if userName and password match
             //Geneate authention token
             JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(encryptedPassword);
-            userAuthTokenEntity = new UserAuthTokenEntity();
-            userAuthTokenEntity.setUser(userEntity);
+            userAuthEntity = new UserAuthEntity();
+            userAuthEntity.setUserEntity(userEntity);
             final ZonedDateTime now = ZonedDateTime.now();
             final ZonedDateTime expiresAt = now.plusHours(8);
-            userAuthTokenEntity.setAccessToken(jwtTokenProvider.generateToken(userEntity.getUuid(), now, expiresAt));
-            userAuthTokenEntity.setLoginAt(now);
-            userAuthTokenEntity.setExpiresAt(expiresAt);
-            userAuthTokenEntity.setUuid(userEntity.getUuid());
-            userDao.createAuthToken(userAuthTokenEntity);
+            userAuthEntity.setAccessToken(jwtTokenProvider.generateToken(userEntity.getUuid(), now, expiresAt));
+            userAuthEntity.setLoginAt(now);
+            userAuthEntity.setExpiresAt(expiresAt);
+            userAuthEntity.setUuid(userEntity.getUuid());
+            userDao.createAuthToken(userAuthEntity);
         } else {
-            //throw exception
             throw new AuthenticationFailedException("ATH-002", "Password Failed");
         }
-        return userAuthTokenEntity;
+        return userAuthEntity;
     }
 }
