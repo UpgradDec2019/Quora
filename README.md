@@ -1,4 +1,4 @@
-# Quora group project for Upgrad Dec'19 Blockchain batch
+# Quora - group project for Upgrad Dec'19 Blockchain batch
 #Dev Changes done by:
 #REST API endpoints - 1 - Mithun Suresh
 #REST API endpoints - 2 - Aravind Makam
@@ -8,8 +8,13 @@
 
 #The project is made using Swagger user interface and the data is stored in the PostgreSQL database. Also, the project has been implemented using Java Persistence API (JPA).
 
+#Build the project in the main directory of the project using "mvn clean install -DskipTests". In order to activate the profile setup, move to quora-db folder using "cd quora-db" command in the terminal and then run "mvn clean install -Psetup" command to activate the profile setup.
+
+Since the database is not mocked, "quora_test.sql" file is given in the stub to create the records in the database to pass all the test cases. All the test cases would only pass if you have these records in the database. Therefore, before running each test case you need to ensure that the database contains all the records given in "quora_test.sql" file. As otherwise, the test case may not pass even if the code implementation is correct.
+
 #Project Structure
-The project followed a definite structure in order to help the co-developers and reviewers for easy understanding.The main module is divided into three sub-modules —  quora-api, quora-db, and quora-service.
+
+#The project followed a definite structure in order to help the co-developers and reviewers for easy understanding.The main module is divided into three sub-modules —  quora-api, quora-db, and quora-service.
 
 1. quora-api
 
